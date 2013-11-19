@@ -1,2 +1,31 @@
-Form handler, build for Kohana v3.3. Module to handle form validation and 
-reporting at client and server side.
+#Formal
+
+Kohana module and jQuery plugin to handle form validation at client and server side
+
+#### What it does
+
+TODO
+
+#### What it does not
+
+TODO
+
+#### Is it for me?
+
+TODO
+
+## Setup
+
+TODO
+
+#### Kohana
+
+TODO
+
+#### jQuery
+
+TODO
+
+## Examples
+
+TODO
