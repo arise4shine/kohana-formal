@@ -1,0 +1,113 @@
+(function($){
+    $.widget('wgiog.formal', {
+
+        options: {
+            // key of the form, unique identifier to this particular form
+            key: null,
+            
+            // Output settings
+            messagePanel: '#formal-messages',
+            
+            // Events
+            beforeSubmit: undefined,
+            collectData: undefined,
+            submit: undefined,
+            response: undefined,
+            
+            // Message Container options
+            messageContainerTemplate: '<div class="formal-report"><div class="formal-report-list"></div></div>',
+            messageContainerItemTemplate: '<div class="formal-report-list-item"><div class="message"></div></div>',
+            messageContainerSelector: '.formal-messages',
+            
+            // Settings
+            debug: true,
+            
+            test: 'yup'
+        },
+
+        _create: function() {
+            if(!this.options.key) {
+                this.options.key = this.element.attr('id') || 'unknown';
+            }
+            
+            $('<input/>').attr({ type: 'hidden', name: 'formal-key'}).val(this.options.key).appendTo(this.element);
+            
+            // Attach events to form
+            this._on({
+                'submit': this._handleSubmit 
+            });
+            
+            this.log('Instance created (key: ' + this.options.key + '}');
+        },
+
+        _handleSubmit: function(e) {
+            e.preventDefault();
+            var that = this;
+            var serializedFormData
+            
+            this.log('form submitted');
+            
+            // fire events
+            if(typeof this.options.beforeSubmit === 'function') this._trigger('beforeSubmit', null, that);
+            if(typeof this.options.submit === 'function') return this._trigger('submit');
+            
+            if(typeof this.options.collectData === 'function') {
+                serializedFormData = this.options.collectData(this.element.serializeArray());
+            } else {
+                serializedFormData = this.element.serializeArray();
+            }
+            
+            this.log('serialized data to be sent to server:');
+            this.log(serializedFormData);
+            
+            $.post(this.element.attr('action'), serializedFormData, function(data) {
+                that._handleResponse(data);
+            }, 'json')
+                    .fail(function() { 
+                        alert('something went wrong') 
+                    });
+                    
+            this.log('data sent to server');
+        },
+
+        _handleResponse: function(data) {
+            this.log('got a response:');
+            this.log(data);
+    
+            var status = data.status || 'error';
+            var messages = data.messages || [];
+            
+            if(typeof this.options.response === 'function') return this.options.response(status, messages, data, this);
+            
+            if(status === 'ok') {
+                this.element.off('submit');
+                return this.element.trigger('submit');
+            }
+            
+            this._displayErrors(messages);
+        },
+
+        _displayErrors: function(messages) {
+            this.log('displaying errors');
+    
+            var that = this;
+            var messageContainer = $(this.options.messageContainerTemplate);
+            $.each(messages, function(field, message) {
+                var messageContainerItem = $(that.options.messageContainerItemTemplate);
+                $('.message', messageContainerItem).html(message);
+                messageContainerItem.appendTo($('.formal-report-list', messageContainer));
+            });
+            $(this.options.messageContainerSelector).html(messageContainer.html());
+            
+            this.log('done displaying errors');
+        },
+
+        log: function(message) {
+            if(!console.log || !this.options.debug) return;
+            
+            if((typeof message) == 'object') return console.log(message);
+            
+            console.log('[Formal] ' + message);
+        }
+    });
+})(jQuery);

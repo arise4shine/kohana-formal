@@ -2,70 +2,56 @@
 
 return array(
     
-    'basic_callback' => array(
-        'settings' => array(
-            'messagePane' => 'paneBasicCallback',
-            'afterSubmit' => 'callback',
-            'afterSubmitCallback' => '&customCallback'
-        ),
+    'example' => array(
+        'settings' => array(),
         
-        'input_field' => array(
-            'label' => 'The first input field',
-            'rules' => array('required' => true)
-        ),
-        
-        'email' => array(
-            'label' => 'E-mail address',
-            'rules' => array('required' => true, 'email' => true)
-        )
-    ),
-    
-    'basic_report' => array(
-        'settings' => array(
-            'messagePane' => 'paneBasicReport',
-            'afterSubmit' => 'report'
-        ),
-        
-        'input_field' => array(
-            'label' => 'The first input field',
-            'rules' => array('required' => true)
-        ),
-        
-        'email' => array(
-            'label' => 'E-mail address',
-            'rules' => array('required' => true, 'email' => true)
-        )
-    ),
-    
-    'full' => array(
-        'settings' => array(
-            'messagePane' => 'paneFull'
-        ),
-        
-        // validation rules
-        'input1' => array(
-            'label' => 'First input',
-            'rules' => array('required' => true),
-        ),
-        'input2' => array(
-            'label' => 'Second input',
-            'rules' => array('required' => true, 'email' => true)
-        ),
-        'input3' => array(
-            'label' => 'Third input',
-            'rules' => array('required' => true, 'min' => '3', 'max' => '8')
-        ),
-        'input4' => array(
-            'label' => 'Fourth',
-            'rules' => array('required' => true, 'numeric' => 'true')
-        ),
-        'input5' => array(
-            'label' => 'Fifth',
-            'rules' => array('required' => true, 'set' => array('one', 'two', 'three'))
-        ),
-        'input6' => array(
-            'label' => 'Sixth',
-            'rules' => array('required' => true, 'date' => 'true')
+        'fields' => array(
+            
+            'string' => array(
+                'rules' => array(
+                    'Formal::example' => array(':validation', ':field', ':value', 'foo' , 8)
+                )
+            ),
+            
+            'e-mail' => array(
+                'rules' => array(
+                    'email',
+                    'not_empty'
+                )
+            ),
+            
+            'range' => array(
+                'rules' => array(
+                    'range' => array(':value', 3, 8), 'not_empty'
+                )
+            ),
+            
+            'numeric' => array(
+                'rules' => array(
+                    'numeric', 'not_empty', 'range' => array(':value', 3, 8), 'max_length' => array(':value', 1)
+                )
+            ),
+            
+            'password' => array(
+                'rules' => array(
+                    'not_empty'
+                )
+            ),
+            
+            'confirm' => array(
+                'rules' => array(
+                    'not_empty',
+                    'matches' => array(':validation', 'confirm', 'password')
+                )
+            ),
+            
+            'date' => array(
+                'rules' => array(
+                    'not_empty',
+                    'date'
+                )
+            )
+            
         )
     )
 );

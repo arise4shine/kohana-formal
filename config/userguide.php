@@ -18,7 +18,7 @@ return array
             'description' => 'Kohana module to handle form requests at the server side as well as the client side',
  
             // Copyright message, shown in the footer for this module
-            'copyright' => '&copy; 2010–2011 wgiog',
+            'copyright' => '&copy; 2014 wgiog',
         )   
     )
 );
