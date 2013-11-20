@@ -1,4 +1,4 @@
-html { height: 100%;}
+/*html { height: 100%;}
 body{margin:0;padding:0; height: 100%; background: #f6f6f6;  font-family:Arial;font-size:15px;color:#414141;}
 
 .clear{clear:both;}
@@ -14,7 +14,7 @@ h2{font-size:12pt;border-bottom:1px solid #bbb;padding-bottom:5px;margin-bottom:
 
 .container { width: 900px; margin: 0 auto 0; padding: 20px 20px 0; background: #fff; border-left: 1px solid #d8d8d8; border-right: 1px solid #d8d8d8; }
 
-input { background: #fff; border: 1px solid #ccc; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; height: 42px; width: 386px; /*border: 1px solid #414141*/; }
+input { background: #fff; border: 1px solid #ccc; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; height: 42px; width: 386px; border: 1px solid #414141; }
 label { font-size: 16px;}
 fieldset .row { margin-bottom: 10px; }
 
@@ -24,7 +24,7 @@ fieldset .row { margin-bottom: 10px; }
 .button:hover span{background:url('../images/button_span_hover.png') no-repeat;}
 .button span img{vertical-align:middle;margin-right:10px;}
 
-/******************************************************************************/
+****************************************************************************
 
 .left{float:left;}
 .right{float:right;}
@@ -43,4 +43,4 @@ input.formal-field-error { background: #fcd9ef url('../images/x_alt_12x12.png') 
 
 input.required { background: url('../images/star_8x8.png') top right no-repeat; }
 
-fieldset { width: 600px; }
+fieldset { width: 600px; }*/

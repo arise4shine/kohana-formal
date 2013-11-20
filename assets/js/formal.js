@@ -20,7 +20,7 @@
             messageContainerSelector: '.formal-messages',
             
             // Settings
-            debug: true,
+            debug: false,
             
             test: 'yup'
         },
@@ -61,7 +61,7 @@
             this.log(serializedFormData);
             
             $.post(this.element.attr('action'), serializedFormData, function(data) {
-                that._handleResponse(data);
+                that.handleResponse(data);
             }, 'json')
                     .fail(function() { 
                         alert('something went wrong') 
@@ -70,14 +70,16 @@
             this.log('data sent to server');
         },
 
-        _handleResponse: function(data) {
+        handleResponse: function(data) {
             this.log('got a response:');
             this.log(data);
     
             var status = data.status || 'error';
             var messages = data.messages || [];
             
-            if(typeof this.options.response === 'function') return this.options.response(status, messages, data, this);
+            if(typeof this.options.response === 'function') {
+                if(this.options.response(status, messages, data, this)) return;
+            }
             
             if(status === 'ok') {
                 this.element.off('submit');

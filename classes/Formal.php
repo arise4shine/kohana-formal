@@ -75,8 +75,12 @@ class Formal {
             throw new Kohana_Exception('No configuration found for key :key', array(':key'  => $this->key()));
         }
         
-        foreach($this->_configuration['fields'] as $field_name => $field_config) {
-            $this->_fields[] = new Formal_Field($this->_validation_object, $field_name, $field_config);
+        if(!array_key_exists('fields', $this->_configuration)) {
+            $this->error(null, 'No field configuration found');
+        } else {
+            foreach($this->_configuration['fields'] as $field_name => $field_config) {
+                $this->_fields[$field_name] = new Formal_Field($this->_validation_object, $field_name, $field_config);
+            }
         }
         
         return true;
@@ -108,7 +112,12 @@ class Formal {
      */
     public function error($field, $error, array $params = null) {
         if(is_null($field)) return $this->_custom_error_messages[] = $error;
-        return $this->_validation_object->error($field, $error, $params);
+        
+        if(!array_key_exists($field, $this->_fields)) {
+            throw new Kohana_Exception('Field ":field" does not exist.', array(':field' => $field));
+        }
+        
+        return $this->_fields[$field]->error($error, $params);
     }
     
     /**
@@ -149,6 +158,20 @@ class Formal {
     /***************************************************************************
      * Getters/setters/checks
      **************************************************************************/
+    
+    public function add_field($field, Array $config = null, $label=null) {
+        if(!is_null($this->field($field))) return null;
+        return $this->_fields[$field] = new Formal_Field($this->_validation_object, $field, $config);
+    }
+    
+    public function field($field) {
+        return array_key_exists($field, $this->_fields) ? $this->_fields[$field] : null;
+    }
+    
+    public function fields() {
+        return $this->_fields;
+    }
+    
     
     /**
      * Get/set the key

@@ -2,13 +2,14 @@
 
 class Formal_Field {
     private $_validation;
-    private $_name;
+    private $_field;
+    private $_label;
     
-    function __construct(Kohana_Validation &$validation_object, $name, Array $configuration) {
+    function __construct(Kohana_Validation &$validation_object, $field, Array $configuration = null) {
         $this->_validation = $validation_object;
         
-        $this->name($name);
-        $this->parse_configuration($configuration);
+        $this->field($field);
+        if(!is_null($configuration)) $this->parse_configuration($configuration);
     }
     
     private function parse_configuration($configuration) {
@@ -25,12 +26,27 @@ class Formal_Field {
         }
     }
     
-    public function name($name = null) {
-        if(is_null($name)) return $this->_name;
-        return $this->_name = $name;
+    public function label($label = null) {
+        if(is_null($label)) {
+            if(is_null($this->_label)) {
+                return $this->field();
+            }
+        }
+        $this->_label = $label;
+        return $this->_validation->label($this->field(), $label);
+            
+    }
+    
+    public function field($field = null) {
+        if(is_null($field)) return $this->_field;
+        return $this->_field = $field;
     }
     
     public function rule($callback, $parameters) {
-        return $this->_validation->rule($this->name(), $callback, $parameters);
+        return $this->_validation->rule($this->field(), $callback, $parameters);
+    }
+    
+    public function error($error, $params) {
+        return $this->_validation->error($this->field(), $error, $params);        
     }
 }
