@@ -114,57 +114,63 @@ messageContainerSelector | .formal-messages | Outer container of the message box
 
 First we build a HTML form and load the jQuery plugin
 
-    <form action="form/validate" method="post" id="myForm">
-        Name: <br>
-        <input type="text" name="name" value="" /><br>
-        <br>
-        <input type="text" name="email" value="" /><br>
-        <br>
-        <button type="submit">Send!</button>
-    </form>
-    <script type="text/javascript">
-        jQuery(document).ready(function($) {
-            $('#myForm').formal();
-        });
-    </script>
+```html
+<form action="form/validate" method="post" id="myForm">
+    Name: <br>
+    <input type="text" name="name" value="" /><br>
+    <br>
+    <input type="text" name="email" value="" /><br>
+    <br>
+    <button type="submit">Send!</button>
+</form>
+<script type="text/javascript">
+    jQuery(document).ready(function($) {
+        $('#myForm').formal();
+    });
+</script>
+```
     
 We also need to setup a few rules for this form. Open up (or create) the file `config/formal/rules.php` in the cascading file system.
 
-    return array(
+```php
+return array(
+
+    'myForm' => array(
     
-        'myForm' => array(
+        'fields' => array(
         
-            'fields' => array(
-            
-                'name' => array(
-                    'label' => 'Name',
-                    'rules' => array(
-                        'not_empty',
-                        'max_length' => array(':value', 12)
-                    )
-                ),
-                
-                'email' => array(
-                    'label' => 'E-mail address',
-                    'rules' => array(
-                        'not_empty',
-                        'email'
-                    )
+            'name' => array(
+                'label' => 'Name',
+                'rules' => array(
+                    'not_empty',
+                    'max_length' => array(':value', 12)
                 )
-                
+            ),
+            
+            'email' => array(
+                'label' => 'E-mail address',
+                'rules' => array(
+                    'not_empty',
+                    'email'
+                )
             )
+            
         )
-    );
-    
+    )
+);
+```
+
 Now setup your controller to receive and check form input
 
-    class Controller_Form extends Controller {
-        function action_validate() {
-            $formal = Formal::factory();
-            if(!$formal->check() || $this->request->is_ajax()) {
-                return $this->response->body($formal->json_report());
-            }
-            
-            $this->response->body('Thanks for your input!');
+```php
+class Controller_Form extends Controller {
+    function action_validate() {
+        $formal = Formal::factory();
+        if(!$formal->check() || $this->request->is_ajax()) {
+            return $this->response->body($formal->json_report());
         }
+        
+        $this->response->body('Thanks for your input!');
     }
+}
+```
