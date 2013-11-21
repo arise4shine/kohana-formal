@@ -80,6 +80,9 @@ class Formal {
         } else {
             foreach($this->_configuration['fields'] as $field_name => $field_config) {
                 $this->_fields[$field_name] = new Formal_Field($this->_validation_object, $field_name, $field_config);
+                if(array_key_exists('label', $field_config)) {
+                    $this->_fields[$field_name]->label($field_config['label']);
+                }
             }
         }
         

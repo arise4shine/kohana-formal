@@ -5,9 +5,6 @@
             // key of the form, unique identifier to this particular form
             key: null,
             
-            // Output settings
-            messagePanel: '#formal-messages',
-            
             // Events
             beforeSubmit: undefined,
             collectData: undefined,
@@ -15,14 +12,12 @@
             response: undefined,
             
             // Message Container options
+            messageContainerSelector: '.formal-messages',
             messageContainerTemplate: '<div class="formal-report"><div class="formal-report-list"></div></div>',
             messageContainerItemTemplate: '<div class="formal-report-list-item"><div class="message"></div></div>',
-            messageContainerSelector: '.formal-messages',
             
             // Settings
             debug: false,
-            
-            test: 'yup'
         },
 
         _create: function() {
@@ -99,7 +94,7 @@
                 $('.message', messageContainerItem).html(message);
                 messageContainerItem.appendTo($('.formal-report-list', messageContainer));
             });
-            $(this.options.messageContainerSelector).html(messageContainer.html());
+            $(this.options.messageContainerSelector).html(messageContainer.html()).show();
             
             this.log('done displaying errors');
         },
@@ -107,7 +102,7 @@
         log: function(message) {
             if(!console.log || !this.options.debug) return;
             
-            if((typeof message) == 'object') return console.log(message);
+            if((typeof message) === 'object') return console.log(message);
             
             console.log('[Formal] ' + message);
         }
