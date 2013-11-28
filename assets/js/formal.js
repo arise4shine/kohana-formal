@@ -10,6 +10,7 @@
             collectData: undefined,
             submit: undefined,
             response: undefined,
+            finalSubmit: null,
             
             // Message Container options
             messageContainerSelector: '.formal-messages',
@@ -17,7 +18,7 @@
             messageContainerItemTemplate: '<div class="formal-report-list-item"><div class="message"></div></div>',
             
             // Settings
-            debug: false,
+            debug: true,
         },
 
         _create: function() {
@@ -41,6 +42,7 @@
             var serializedFormData
             
             this.log('form submitted');
+            this.log('Options in handlesubmit');
             
             // fire events
             if(typeof this.options.beforeSubmit === 'function') this._trigger('beforeSubmit', null, that);
@@ -77,6 +79,9 @@
             }
             
             if(status === 'ok') {
+                if(typeof this.options.finalSubmit === 'function') {
+                    return this.options.finalSubmit(this);
+                }
                 this.element.off('submit');
                 return this.element.trigger('submit');
             }
